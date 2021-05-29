@@ -156,9 +156,7 @@ function insertFakeData (products) {
 			done();
 			if (err) {
 				console.log(err);
-			} else {
-				console.log(results.rows);
-			};
+			}
 		});
 	});
 
