@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const products = require('../docs/products.json');
+// const products = require('../docs/products.json');
 const async = require('async');
 const pool = new Pool({
     user: 'postgres',
@@ -20,32 +20,10 @@ const pool = new Pool({
 *
 */
 
-function test (req, res, next) {
-	const query = `
-	SELECT title
-	FROM film
-	FETCH FIRST 5 ROW ONLY
-	`;
-	pool.connect((err, client, done) => {
-		if (err) return next(err);
-
-		client.query(query, (err, results) => {
-			done();
-			if (err) {
-				console.log(err.stack);
-			} else {
-				for (let row of results.rows) {
-					// console.log(row);
-				}
-				res.json(results.rows[0]);
-			}
-		});
-	});
-};
-
-for(let i = 0; i < products.length; i++) {
-	// console.log(products[i]);
-};
+/* FUNCTION CALLS
+* createTables();
+* insertFakeData(products);
+*/
 
 function createTables () {
 
@@ -160,11 +138,33 @@ function createTables () {
 	});
 };
 
-createTables();
 
-function insertFakeData (req, res, next) {
-	
+function insertFakeData (products) {
+	let query = `
+		INSERT INTO products (id, name, description, price)
+		VALUES 
+	`;
+	for(let i = 0; i < products.length; i++) {
+		query+= `('${products[i].id}', '${products[i].name}', '${products[i].description}', ${products[i].price}),\n`
+	};
+	query = query.slice(0, -2);
+
+	pool.connect((err, client, done) => {
+		if (err) return next(err);
+
+		client.query(query, (err, results) => {
+			done();
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(results.rows);
+			};
+		});
+	});
+
 };
+
+
 
 module.exports = {
 	pool
