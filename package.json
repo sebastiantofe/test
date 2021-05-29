@@ -1,0 +1,27 @@
+{
+  "name": "test",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "set DEBUG=test:* && nodemon ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.16.4",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "compression": "^1.7.4",
+    "async": "^3.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.10.0",
+    "pg": "^8.6.0",
+    "helmet": "^4.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
