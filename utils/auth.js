@@ -11,9 +11,9 @@ exports.authorize = function(req, res, next) {
 
 		const userId = req.header('auth');
 		const query = `
-			SELECT id, last_name, name, roles_id AS role
-			FROM users
-			WHERE id = '${userId}'
+			SELECT u.id, last_name, u.name, r.name AS role
+			FROM users u, roles r
+			WHERE u.id = '${userId}' AND u.roles_id =r.id
 		`;
 
 		db.pool.connect((err, client, done) => {
