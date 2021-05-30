@@ -17,9 +17,9 @@ exports.create_user = [
 		.trim()
 		.isLength({ min: 1, max: 30 })
 		.escape(),
-	body("roles_id", "Invalid role id")
+	body("role_name", "Invalid role name")
 		.trim()
-		.isLength({ min: 36, max: 36 })
+		.isLength({ min: 1, max: 30 })
 		.escape(),
 	async function (req, res, next) {
 		// Extract the validation errors from a request.
@@ -31,14 +31,24 @@ exports.create_user = [
 			});
 			return;
 		}
+		// Get id for role
+		const role_name = req.body.role_name;
+		const roleClause = ` WHERE name = '${role_name}'`
+		const role = await Role.select("id", roleClause);
+		if(role.rowCount === 0) {
+			res.json({
+				message: "Role name does not exist"
+			});
+			return;
+		};
 
+		const role_id = role.rows[0].id;
 		const doc = req.body.document;
 		const last_name = req.body.last_name;
 		const name = req.body.name;
-		const roles_id = req.body.roles_id;
-
+		
 		const columns = "document, last_name, name, roles_id";
-		const values = `'${doc}', '${last_name}', '${name}', '${roles_id}'`;
+		const values = `'${doc}', '${last_name}', '${name}', '${role_id}'`;
 
 		try {
 			const data = await User.insertOne(columns, values);
