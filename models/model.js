@@ -51,6 +51,16 @@ class Model {
 
         return this.pool.query(query);
 	}
+
+    async deleteById(id) {
+		const query = `
+            DELETE FROM ${this.table}
+            WHERE id = '${id}'
+            RETURNING *
+        `;
+
+		return this.pool.query(query);
+	}
 }
 
 module.exports = Model;

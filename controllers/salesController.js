@@ -36,6 +36,7 @@ exports.create_sale = [
 			res.status(201).json({
 				data: data.rows,
 			});
+			return;
 		} catch (err) {
 			next(err);
 			return;
@@ -76,6 +77,7 @@ exports.edit_sale = [
 			res.status(200).json({
 				data: data.rows,
 			});
+			return;
 		} catch (err) {
 			next(err);
 			return;
@@ -83,7 +85,28 @@ exports.edit_sale = [
 	},
 ];
 
-exports.delete_sale = function (req, res) {};
+exports.delete_sale = async function (req, res, next) {
+	const saleId = req.params.saleId
+	try {
+		const data = await Sale.deleteById(saleId);
+		if(data.rows.length === 0) {
+			res.json({
+				message: "Could not found sale with that id"
+			});
+			return;
+		}
+
+		res.status(200).json({
+			
+			message: "Sale deleted successfully",
+			data: data.rows,
+		});
+		return
+	} catch (err) {
+		next(err);
+		return;
+	}
+};
 
 exports.show_all_sales = async function (req, res, next) {
 	try {
