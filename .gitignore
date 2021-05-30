@@ -1,6 +1,5 @@
 docs
-pgdata
-
+pgdata/
 # Logs
 logs
 *.log

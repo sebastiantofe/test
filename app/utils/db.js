@@ -14,8 +14,7 @@ while(retries) {
 	    password: process.env.DB_PASSWORD,
 	    port: process.env.DB_PORT,
 	});
-
-        break;
+	console.log(pool);
   } catch(err) {
     (async() => {
 

@@ -7,13 +7,16 @@ services:
     restart: always
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-      - ./db-dump-init/init-db-and-dump.sql:/docker-entrypoint-initdb.d/init-db-and-dump.sql
+      - ./test-dump.sql:/db/test-dump.sql
+      - ./db-dump-init.sh:/docker-entrypoint-initdb.d/db-dump-init.sh
     ports:
-      - 5555:5432
+      - 5432:5432
   
   app:
     image: test
     restart: always
+    depends_on:
+      - postgres
     environment:
       DB_HOST: postgres
       DB_PASSWORD: ${DB_PASSWORD}

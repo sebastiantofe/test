@@ -1,7 +1,7 @@
 --
 -- PostgreSQL database dump
 --
-  CREATE DATABASE test;
+
 -- Dumped from database version 12.7
 -- Dumped by pg_dump version 12.7
 
