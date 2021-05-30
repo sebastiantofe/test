@@ -36,6 +36,8 @@ while(retries) {
 * - Add extension for generating uuid
 * 		CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 *
+* DUMP DATABASE command in CMD
+* pg_dump -U postgres -p 5555 test > test_dump.sql
 */
 
 /* FUNCTION CALLS
