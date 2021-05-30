@@ -13,7 +13,16 @@ class Model {
 
     return this.pool.query(query);
     
-    }
+  }
+
+  async insertOne(columns, values) {
+    let query = `
+      INSERT INTO ${this.table}(${columns})
+      VALUES (${values})
+      RETURNING id, ${columns}
+    `;
+    return this.pool.query(query);
+  }
 }
 
 module.exports = Model;
