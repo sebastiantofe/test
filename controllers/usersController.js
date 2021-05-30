@@ -53,6 +53,7 @@ exports.create_user = [
 		try {
 			const data = await User.insertOne(columns, values);
 			res.status(201).json({
+				message: "User created successfully",
 				data: data.rows,
 			});
 			return;
@@ -88,6 +89,7 @@ exports.add_new_role = [
 		try {
 			const data = await Role.insertOne(columns, values);
 			res.status(201).json({
+				message: "Role created successfully",
 				data: data.rows,
 			});
 			return;
@@ -98,9 +100,53 @@ exports.add_new_role = [
 	},
 ];
 
-exports.edit_user_role = function(req, res) {
+exports.edit_user_role = [
+	body("role_name", "Invalid role name")
+		.trim()
+		.isLength({ min: 1, max: 30 })
+		.escape(),
+	async function (req, res, next) {
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
 
-};
+		if (!errors.isEmpty()) {
+			res.json({
+				error: errors.array(),
+			});
+			return;
+		}
+
+		// Get id for role
+		const role_name = req.body.role_name;
+		const roleClause = ` WHERE name = '${role_name}'`
+		const role = await Role.select("id", roleClause);
+		if(role.rowCount === 0) {
+			res.json({
+				message: "Role name does not exist"
+			});
+			return;
+		};
+
+
+		const role_id = role.rows[0].id;
+		const user_id = req.params.userId;
+
+		const columns = ["roles_id"];
+		const values = [role_id];
+
+		try {
+			const data = await User.updateOne(user_id, columns, values);
+			res.status(200).json({
+				message: "Role changed successfully",
+				data: data.rows,
+			});
+			return;
+		} catch (err) {
+			next(err);
+			return;
+		}
+	},
+];
 
 exports.delete_user = async function(req, res, next) {
 	const userId = req.params.userId
