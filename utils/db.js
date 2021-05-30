@@ -225,6 +225,14 @@ function createAdminUser() {
 
 };
 
+
+/**
+ * Description. Adds new role in roles table.
+ * 
+ * @param {string}   role - Name of the role to create.
+ *
+ * @return {string} Returns role id after created.
+ */
 function createRole(role) {
 	const query = `
 		INSERT INTO roles(name)

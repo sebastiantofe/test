@@ -8,8 +8,6 @@ exports.authorize = function(req, res, next) {
 		});
 		return
 	} else {
-		console.log(req.header('auth'));
-		console.log(typeof req.header('auth'));
 
 		const userId = req.header('auth');
 		const query = `
@@ -31,7 +29,6 @@ exports.authorize = function(req, res, next) {
 					});
 				} else {
 					req.user = results.rows[0];
-					console.log(req.user);
 					next();
 					return;
 				}

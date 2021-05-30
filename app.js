@@ -1,20 +1,26 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-require('dotenv').config();
+const compression = require('compression');
+const cors = require('cors');
+
 const apiRouter = require('./routes/api');
 const auth = require('./utils/auth');
 const indexRouter = require('./routes/index');
 
 const app = express();
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression()); // Compress all responses
+app.use(cors());
 
 require('./utils/db');
 
@@ -35,8 +41,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 
-
-  // render the error page
+  // send error
   res.status(err.status || 500);
   res.json({ error: err.message });
 });
