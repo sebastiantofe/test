@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: "${dbPASSWORD}"
+    volumes:
+      - ./pgdta:/var/lib/postgresql/data
+    ports:
+    - "5555:5432"
+  
+  app:
+    image: sebastiantofe/test
+  ports:
+    - "3000:3000"
+

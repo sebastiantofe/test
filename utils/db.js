@@ -1,15 +1,33 @@
 const { Pool } = require('pg');
 // const products = require('../docs/products.json');
 const async = require('async');
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'test',
-    password: process.env.dbPASSWORD,
-    port: process.env.dbPORT,
-});
+let retries = 5;
+let pool;
+while(retries) {
 
-/* 
+  try {
+
+	 pool = new Pool({
+	    user: 'postgres',
+	    host: 'localhost',
+	    database: 'test',
+	    password: process.env.dbPASSWORD,
+	    port: process.env.dbPORT,
+	});
+
+        break;
+  } catch(err) {
+    (async() => {
+
+    console.log(err);
+    retries-=1;
+    console.log(`retries left: ${retries}`)
+      await new Promise(res => setTimeout(res, 2000));
+     })();
+  }
+}
+
+/*
 * RUN IN psql
 
 * - Create database command
