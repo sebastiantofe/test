@@ -3,14 +3,20 @@ services:
   postgres:
     image: postgres:12-alpine
     environment:
-      POSTGRES_PASSWORD: "${dbPASSWORD}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    restart: always
     volumes:
-      - ./pgdta:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
+      - ./db-dump-init/init-db-and-dump.sql:/docker-entrypoint-initdb.d/init-db-and-dump.sql
     ports:
-    - "5555:5432"
+      - 5555:5432
   
   app:
-    image: sebastiantofe/test
-  ports:
-    - "3000:3000"
+    image: test
+    restart: always
+    environment:
+      DB_HOST: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 3000:3000
 

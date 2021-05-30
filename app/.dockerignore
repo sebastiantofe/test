@@ -1,0 +1,8 @@
+#Ignore git history
+.git
+
+# node modules
+node_modules/
+
+#env variables
+.env

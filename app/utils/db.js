@@ -9,10 +9,10 @@ while(retries) {
 
 	 pool = new Pool({
 	    user: 'postgres',
-	    host: 'localhost',
+	    host: process.env.DB_HOST,
 	    database: 'test',
-	    password: process.env.dbPASSWORD,
-	    port: process.env.dbPORT,
+	    password: process.env.DB_PASSWORD,
+	    port: process.env.DB_PORT,
 	});
 
         break;
@@ -22,7 +22,7 @@ while(retries) {
     console.log(err);
     retries-=1;
     console.log(`retries left: ${retries}`)
-      await new Promise(res => setTimeout(res, 2000));
+      await new Promise(res => setTimeout(res, 4000));
      })();
   }
 }
