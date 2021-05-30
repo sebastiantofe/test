@@ -17,7 +17,7 @@ X = 'Admin role required'
 * [X] Create sale POST /
 * [X] Update sale PUT /:saleId X
 * [ ] Delete sale DELETE /:saleId X
-* [ ] Show sales GET /
+* [X] Show sales GET /
 
 ### Products /products
 * [X] Create product POST / X

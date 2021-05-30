@@ -73,7 +73,7 @@ exports.edit_sale = [
 
 		try {
 			const data = await Sale.updateOne(saleId, columns, values);
-			res.status(201).json({
+			res.status(200).json({
 				data: data.rows,
 			});
 		} catch (err) {
@@ -85,4 +85,14 @@ exports.edit_sale = [
 
 exports.delete_sale = function (req, res) {};
 
-exports.show_all_sales = function (req, res) {};
+exports.show_all_sales = async function (req, res, next) {
+	try {
+		const data = await Sale.select('*');
+		res.status(200).json({
+			data: data.rows,
+		});
+	} catch (err) {
+		next(err);
+		return;
+	}	
+};
