@@ -13,7 +13,7 @@ services:
       - 5432:5432
   
   app:
-    image: test
+    image: sebastiantofe/test
     restart: always
     depends_on:
       - postgres
