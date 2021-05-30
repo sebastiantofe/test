@@ -23,6 +23,9 @@ const pool = new Pool({
 /* FUNCTION CALLS
 * createTables();
 * insertFakeData(products);
+* createInitialRoles();
+* createAdminUser();
+* 
 */
 
 function createTables () {
@@ -82,12 +85,12 @@ function createTables () {
 				});
 			});
 		},
-		function roles(callback) {
+		function rolesTable(callback) {
 
 			const query = `
 				CREATE TABLE IF NOT EXISTS roles (
 					id uuid DEFAULT uuid_generate_v4(),
-					name VARCHAR(30) NOT NULL,
+					name VARCHAR(30) UNIQUE NOT NULL,
 					PRIMARY KEY (id)
 				);
 			`;
@@ -106,7 +109,7 @@ function createTables () {
 				});
 			});
 		},
-		function products(callback) {
+		function productsTable(callback) {
 
 			const query = `
 				CREATE TABLE IF NOT EXISTS products (
@@ -162,8 +165,91 @@ function insertFakeData (products) {
 
 };
 
+function createInitialRoles() {
+
+	const query = `
+		INSERT INTO roles (name)
+		VALUES ('admin'),
+		('employee'),
+		('user')
+		RETURNING id;
+	`;
+	pool.connect((err, client, done) => {
+		if (err) return next(err);
+
+		client.query(query, (err, results) => {
+			done();
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(results.rows);
+			}
+		});
+	});
+
+};
+
+function createAdminUser() {
+	
+	// Query to get the id for admin role
+	const idQuery = `
+		SELECT id
+		FROM roles
+		WHERE name = 'admin'
+	`;
+
+	pool.connect((err, client, done) => {
+		if (err) return next(err);
+
+		client.query(idQuery, (err, results) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(results.rows[0].id);
+				const adminId = results.rows[0].id;
+				const query = `
+					INSERT INTO users(document, last_name, name, roles_id)
+					VALUES (1010101010, 'Torrado', 'Sebastian', '${adminId}')
+				`;
+
+				client.query(query, (err) => {
+					done();
+					if (err) {
+						console.log(err);
+					};
+				})
+			}
+		});
+	});
+
+
+};
+
+function createRole(role) {
+	const query = `
+		INSERT INTO roles(name)
+		VALUES ('${role}')
+		RETURNING id
+	`;
+
+	pool.connect((err, client, done) => {
+		if (err) return next(err);
+
+		client.query(query, (err, results) => {
+			done();
+			if (err) {
+				console.log(err);
+				return;
+			} else {
+				console.log(results.rows[0].id);
+				return results.rows[0].id
+			}
+		});
+	});
+};
 
 
 module.exports = {
-	pool
+	pool,
+	createRole
 }
