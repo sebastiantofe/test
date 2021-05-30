@@ -112,10 +112,10 @@ exports.show_all_sales = async function (req, res, next) {
 	try {
 		const data = await Sale.select('*');
 		res.status(200).json({
-			data: data.rows,
+			data: data.rows
 		});
 	} catch (err) {
 		next(err);
 		return;
-	}	
+	};
 };

@@ -25,7 +25,7 @@ X = 'Admin role required'
 
 ### Users /users
 * [ ] Create user POST / X
-* [ ] Show users  GET / X
+* [X] Show users  GET / X
 * [ ] Delete user  DELETE /:userId X
 * [ ] Edit user role PUT /:userId X
 * [ ] Create role POST /roles X
