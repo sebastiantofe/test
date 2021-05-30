@@ -22,7 +22,7 @@ exports.authorize = function(req, res, next) {
 			client.query(query, (err, results) => {
 				done();
 				if (err) {
-					console.log(err);
+					return next(err);
 				} else if (results.rows.length === 0) {
 					res.status(401).json({
 						message: 'User does not exist'
