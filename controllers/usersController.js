@@ -4,9 +4,54 @@ const Role = new Model("roles");
 
 const { body, validationResult } = require("express-validator");
 
-exports.create_user = function(req, res) {
+exports.create_user = [
+	body("document", "Document is too short or too long.")
+		.trim()
+		.isLength({ min: 1, max: 20 })
+		.escape(),
+	body("last_name", "Last name is too short or too long.")
+		.trim()
+		.isLength({ min: 1, max: 30 })
+		.escape(),
+	body("name", "Name is too short or too long.")
+		.trim()
+		.isLength({ min: 1, max: 30 })
+		.escape(),
+	body("roles_id", "Invalid role id")
+		.trim()
+		.isLength({ min: 36, max: 36 })
+		.escape(),
+	async function (req, res, next) {
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
 
-};
+		if (!errors.isEmpty()) {
+			res.json({
+				error: errors.array(),
+			});
+			return;
+		}
+
+		const doc = req.body.document;
+		const last_name = req.body.last_name;
+		const name = req.body.name;
+		const roles_id = req.body.roles_id;
+
+		const columns = "document, last_name, name, roles_id";
+		const values = `'${doc}', '${last_name}', '${name}', '${roles_id}'`;
+
+		try {
+			const data = await User.insertOne(columns, values);
+			res.status(201).json({
+				data: data.rows,
+			});
+			return;
+		} catch (err) {
+			next(err);
+			return;
+		}
+	},
+];
 
 exports.add_new_role = [
 	body("name", "Name  for role is too short or too long.")
