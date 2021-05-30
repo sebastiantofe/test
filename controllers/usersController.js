@@ -92,8 +92,26 @@ exports.edit_user_role = function(req, res) {
 
 };
 
-exports.delete_user = function(req, res) {
+exports.delete_user = async function(req, res, next) {
+	const userId = req.params.userId
+	try {
+		const data = await User.deleteById(userId);
+		if(data.rows.length === 0) {
+			res.json({
+				message: "Could not found user with that id"
+			});
+			return;
+		}
 
+		res.status(200).json({
+			message: "User deleted successfully",
+			data: data.rows,
+		});
+		return;
+	} catch (err) {
+		next(err);
+		return;
+	}
 };
 
 exports.show_all_users = async function(req, res, next) {

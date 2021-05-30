@@ -97,11 +97,10 @@ exports.delete_sale = async function (req, res, next) {
 		}
 
 		res.status(200).json({
-			
 			message: "Sale deleted successfully",
 			data: data.rows,
 		});
-		return
+		return;
 	} catch (err) {
 		next(err);
 		return;
