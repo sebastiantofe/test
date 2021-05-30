@@ -30,7 +30,7 @@ exports.create_user = [
 				error: errors.array(),
 			});
 			return;
-		}
+		};
 		// Get id for role
 		const role_name = req.body.role_name;
 		const roleClause = ` WHERE name = '${role_name}'`

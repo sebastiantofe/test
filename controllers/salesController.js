@@ -104,7 +104,7 @@ exports.delete_sale = async function (req, res, next) {
 	} catch (err) {
 		next(err);
 		return;
-	}
+	};
 };
 
 exports.show_all_sales = async function (req, res, next) {

@@ -31,6 +31,6 @@ X = 'Admin role required'
 * [X] Create role POST /roles X
 
 ### Reports /reports
-* [ ] Get daily report GET /daily X
+* [X] Get daily report GET /daily X
 * [ ] Get monthly report GET /monthly X
 
